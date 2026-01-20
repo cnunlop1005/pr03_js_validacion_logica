@@ -1,0 +1,70 @@
+const form = document.getElementById("formulario");
+const mensajes = document.getElementById("mensajes");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault(); // evita que la página se recargue
+
+  let errores = [];
+
+  // Obtener valores y limpiar espacios
+  const nombre = document.getElementById("nombre").value.trim();
+  const apellidos = document.getElementById("apellidos").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const password2 = document.getElementById("password2").value;
+  const edad = document.getElementById("edad").value;
+  const condiciones = document.getElementById("condiciones").checked;
+
+  // VALIDACIÓN NOMBRE
+  if (nombre.length < 3) {
+    errores.push("El nombre debe tener al menos 3 caracteres.");
+  }
+
+  // VALIDACIÓN APELLIDOS
+  if (apellidos.length < 3) {
+    errores.push("Los apellidos deben tener al menos 3 caracteres.");
+  }
+
+  // VALIDACIÓN EMAIL
+  const posArroba = email.indexOf("@");
+  const posPunto = email.lastIndexOf(".");
+
+  if (
+    posArroba === -1 ||
+    posPunto === -1 ||
+    posPunto < posArroba
+  ) {
+    errores.push("El email no tiene un formato válido.");
+  }
+
+  // VALIDACIÓN CONTRASEÑAS
+  if (password.length < 6) {
+    errores.push("La contraseña debe tener al menos 6 caracteres.");
+  }
+
+  if (password !== password2) {
+    errores.push("Las contraseñas no coinciden.");
+  }
+
+  // VALIDACIÓN EDAD
+  if (edad === "" || edad < 0 || edad > 120) {
+    errores.push("La edad debe estar entre 0 y 120.");
+  }
+
+  // VALIDACIÓN CONDICIONES
+  if (!condiciones) {
+    errores.push("Debes aceptar las condiciones.");
+  }
+
+  // MOSTRAR RESULTADO
+  if (errores.length > 0) {
+    mensajes.className = "mensajes err";
+    mensajes.innerHTML = errores.join("<br>");
+  } else {
+    mensajes.className = "mensajes ok";
+    mensajes.textContent = "Formulario enviado correctamente ✅";
+
+    // Si se quisiera enviar realmente:
+    // form.submit();
+  }
+});
